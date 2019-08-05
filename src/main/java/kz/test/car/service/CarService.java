@@ -1,18 +1,17 @@
 package kz.test.car.service;
 
+import kz.test.car.domain.Role;
 import kz.test.car.model.Car;
 import kz.test.car.model.form.CarForm;
 import kz.test.car.repos.CarRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 public class CarService {
@@ -21,11 +20,6 @@ public class CarService {
 
     public List<CarForm> getAll(){
         List<Car> cars = (List<Car>) carRepo.findAll();
-//        return cars.stream()
-//                .map(c -> new CarForm(c.getId(), c.getCarModel(), c.getCarYear(),
-//                c.getCarMileage(), c.getCarOwnerName(), c.getCarOwnerNumber(),
-//                c.getCarOwnerAddress(), c.getCarMasterName(), c.getCarMasterWork()))
-//                .collect(Collectors.toList());
         List<CarForm> forms = new ArrayList<>();
         for(Car c : cars) {
             CarForm form = new CarForm(c.getId(), c.getCarModel(), c.getCarYear(),
@@ -37,50 +31,99 @@ public class CarService {
     }
 
     public void addCar(CarForm carForm) {
-        Car car = new Car(carForm.getCarModel(), carForm.getCarYear(), carForm.getCarMileage(), carForm.getCarOwnerName(),
-                carForm.getCarOwnerNumber(), carForm.getCarOwnerAddress(), carForm.getCarMasterName(), carForm.getCarMasterWork());
+        Car car = new Car(carForm.getCarFormModel(), carForm.getCarFormYear(), carForm.getCarFormMileage(),
+                carForm.getCarFormOwnerName(), carForm.getCarFormOwnerNumber(), carForm.getCarFormOwnerAddress(),
+                carForm.getCarFormMasterName(), carForm.getCarFormMasterWork());
         carRepo.save(car);
     }
 
-    public CarForm findCar(CarForm carForm){
-        Car car = carRepo.findByCarOwnerName(carForm.getCarOwnerName());
-        CarForm carFound = null;
+    public List<CarForm> findCar(CarForm carForm){
+        List<Car> cars = carRepo.findByCarOwnerName(carForm.getCarFormOwnerName());
+        List<CarForm> carFound = new ArrayList<>();
 
-        if(carForm != null){
-            carFound = new CarForm(car.getId(), car.getCarModel(), car.getCarYear(),
-                    car.getCarMileage(), car.getCarOwnerName(), car.getCarOwnerNumber(),
-                    car.getCarOwnerAddress(), car.getCarMasterName(), car.getCarMasterWork());
-        } else{
-            getAll();
+        if(!"".equals(carForm.getCarFormOwnerName())){
+            for (Car car : cars) {
+
+                carFound.add(new CarForm(car.getId(), car.getCarModel(), car.getCarYear(),
+                        car.getCarMileage(), car.getCarOwnerName(), car.getCarOwnerNumber(),
+                        car.getCarOwnerAddress(), car.getCarMasterName(), car.getCarMasterWork()));
+            }
+        }else {
+            carFound = getAll();
         }
 
         return carFound;
     }
 
     public void deleteCar(CarForm carForm){
-        Car car = carRepo.findByCarOwnerName(carForm.getCarOwnerName());
+        carRepo.deleteById(carForm.getCarFormId());
+    }
 
-        if(carForm != null){
-            carRepo.delete(car);
+    public void deleteUserCar(CarForm carForm, User user){
+
+        Optional<Car> car1 = carRepo.findById(carForm.getCarFormId());
+        Car car = car1.get();
+
+        if(car.getCarOwnerName().equals(user.getUsername()))
+            deleteCar(carForm);
+    }
+
+    public void updateCar(CarForm carForm){
+        Optional<Car> car1 = carRepo.findById(carForm.getCarFormId());
+        Car car = car1.get();
+
+        if(!"".equals(carForm.getCarFormModel())){
+            car.setCarModel(carForm.getCarFormModel());
+        }
+        if(!"".equals(carForm.getCarFormYear())){
+            car.setCarYear(carForm.getCarFormYear());
+        }
+        if(carForm.getCarFormMileage() != null){
+            car.setCarMileage(carForm.getCarFormMileage());
+        }
+        if(!"".equals(carForm.getCarFormOwnerName())){
+            car.setCarOwnerName(carForm.getCarFormOwnerName());
+        }
+        if(!"".equals(carForm.getCarFormOwnerNumber())){
+            car.setCarOwnerNumber(carForm.getCarFormOwnerNumber());
+        }
+        if(!"".equals(carForm.getCarFormOwnerAddress())){
+            car.setCarOwnerAddress(carForm.getCarFormOwnerAddress());
+        }
+        if(!"".equals(carForm.getCarFormMasterName())){
+            car.setCarMasterName(carForm.getCarFormMasterName());
+        }
+        if(!"".equals(carForm.getCarFormMasterWork())){
+            car.setCarMasterWork(carForm.getCarFormMasterWork());
+        }
+        carRepo.save(car);
+    }
+
+    public void updateUserCar(CarForm carForm, User user){
+
+        Optional<Car> car1 = carRepo.findById(carForm.getCarFormId());
+        Car car = car1.get();
+
+        if(car.getCarOwnerName().equals(user.getUsername())){
+            carForm.setCarFormOwnerName(user.getUsername());
+            updateCar(carForm);
         }
     }
 
-    public void update(CarForm carForm){
+    public List<CarForm> findUserCar(User user){
 
-        Car car = carRepo.findByCarOwnerName(carForm.getCarOwnerName());
+        List<Car> car = carRepo.findByCarOwnerName(user.getUsername());
+        List<CarForm> carFound = new ArrayList<>();
 
-        if(carForm != null) {
-            car.setId(carForm.getId());
-            car.setCarModel(carForm.getCarModel());
-            car.setCarYear(carForm.getCarYear());
-            car.setCarMileage(carForm.getCarMileage());
-            car.setCarOwnerName(carForm.getCarOwnerName());
-            car.setCarOwnerNumber(carForm.getCarOwnerNumber());
-            car.setCarOwnerAddress(carForm.getCarOwnerAddress());
-            car.setCarMasterName(carForm.getCarMasterName());
-            car.setCarMasterWork(carForm.getCarMasterWork());
+        if(!"".equals(user.getUsername())){
+            for(int i=0; i<car.size(); i++){
+
+                carFound.add(new CarForm(car.get(i).getId(), car.get(i).getCarModel(), car.get(i).getCarYear(),
+                        car.get(i).getCarMileage(), car.get(i).getCarOwnerName(), car.get(i).getCarOwnerNumber(),
+                        car.get(i).getCarOwnerAddress(), car.get(i).getCarMasterName(), car.get(i).getCarMasterWork()));
+            }
         }
 
-        carRepo.save(car);
+        return carFound;
     }
 }

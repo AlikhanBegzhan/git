@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <head>
+        <meta charset="UTF-8">
+        <title>User Page</title>
+    </head>
+
+    <body>
+        <form th:action="@{/logout}" method="post" style="float: right;">
+            <input type="submit" value="Sign Out"/>
+        </form><br/>
+        <h1 style="text-align: center; padding-left: 80px">User Page</h1>
+        <h3 style="text-align: center;">Welcome, <span sec:authentication="name"></span></h3><br/><br/>
+
+        <div style="padding-left: 30px">
+            <h5>Cars List:</h5><br/>
+            <tbody>
+            <table border="2">
+                <tr>
+                    <td>Car №</td>
+                    <td>Car Model</td>
+                    <td>Car Year</td>
+                    <td>Car Mileage</td>
+                    <td>Car Owner Name</td>
+                    <td>Car Owner Number</td>
+                    <td>Car Owner Address</td>
+                    <td>Car Master Name</td>
+                    <td>Car Master Work</td>
+                </tr>
+
+                <tr th:each="car: ${cars}">
+                    <td th:text="${car.carFormId}" />
+                    <td th:text="${car.carFormModel}" />
+                    <td th:text="${car.carFormYear}" />
+                    <td th:text="${car.carFormMileage}" />
+                    <td th:text="${car.carFormOwnerName}" />
+                    <td th:text="${car.carFormOwnerNumber}" />
+                    <td th:text="${car.carFormOwnerAddress}" />
+                    <td th:text="${car.carFormMasterName}" />
+                    <td th:text="${car.carFormMasterWork}" />
+                </tr>
+            </table>
+            </tbody>
+        </div><br/><br/>
+
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Add Car
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div>
+                            Enter car information to add car to list:
+                            <form action="#" th:action="@{/userPage/addCar}" th:object="${carForm}" method="POST">
+                                <input type="text" th:field="*{carFormModel}" placeholder="car model">
+                                <input type="text" th:field="*{carFormYear}" placeholder="car year">
+                                <input type="number" th:field="*{carFormMileage}" placeholder="car mileage">
+                                <input type="text" th:field="*{carFormOwnerNumber}" placeholder="owner number">
+                                <input type="text" th:field="*{carFormOwnerAddress}" placeholder="owner address">
+                                <input type="text" th:field="*{carFormMasterName}" placeholder="master name">
+                                <input type="text" th:field="*{carFormMasterWork}" placeholder="master work"><br/>
+                                <button type="submit">Add</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Delete Car
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Enter your car № to DELETE your car:
+                        <form action="#" th:action="@{/userPage/deleteCar}" th:object="${carForm}" method="POST">
+                            <input type="text" name="carFormId">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingFour">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                            Update Car
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Enter your car number to UPDATE your car<br/>
+                        <i>Before you do, please be sure to find the correct Car!</i><br/>
+                        <form action="#" th:action="@{/userPage/updateCar}" th:object="${carForm}" method="POST">
+                            Type car number:
+                            <input type="number" th:field="*{carFormId}" placeholder="car number">
+                            <div>
+                                Here are car details:<br/>
+                                <input type="text" th:field="*{carFormModel}" placeholder="car model">
+                                <input type="text" th:field="*{carFormYear}" placeholder="car year">
+                                <input type="number" th:field="*{carFormMileage}" placeholder="car mileage">
+                                <input type="text" th:field="*{carFormOwnerNumber}" placeholder="owner number">
+                                <input type="text" th:field="*{carFormOwnerAddress}" placeholder="owner address">
+                                <input type="text" th:field="*{carFormMasterName}" placeholder="master name">
+                                <input type="text" th:field="*{carFormMasterWork}" placeholder="master work"><br/>
+                                <button type="submit">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

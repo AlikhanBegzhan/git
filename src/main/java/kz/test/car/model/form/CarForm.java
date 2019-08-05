@@ -2,102 +2,102 @@ package kz.test.car.model.form;
 
 public class CarForm {
 
-    private Integer id;
-    private String carModel;
-    private String carYear;
-    private int carMileage;
-    private String carOwnerName;
-    private String carOwnerNumber;
-    private String carOwnerAddress;
-    private String carMasterName;
-    private String carMasterWork;
+    private Integer carFormId;
+    private String carFormModel;
+    private String carFormYear;
+    private Integer carFormMileage;
+    private String carFormOwnerName;
+    private String carFormOwnerNumber;
+    private String carFormOwnerAddress;
+    private String carFormMasterName;
+    private String carFormMasterWork;
 
-    public CarForm(Integer id, String carModel, String carYear,
-                   int carMileage, String carOwnerName, String carOwnerNumber,
-                   String carOwnerAddress, String carMasterName, String carMasterWork) {
-        this.id = id;
-        this.carModel = carModel;
-        this.carYear = carYear;
-        this.carMileage = carMileage;
-        this.carOwnerName = carOwnerName;
-        this.carOwnerNumber = carOwnerNumber;
-        this.carOwnerAddress = carOwnerAddress;
-        this.carMasterName = carMasterName;
-        this.carMasterWork = carMasterWork;
+    public CarForm(Integer carFormId, String carFormModel, String carFormYear,
+                   Integer carFormMileage, String carFormOwnerName, String carFormOwnerNumber,
+                   String carFormOwnerAddress, String carFormMasterName, String carFormMasterWork) {
+        this.carFormId = carFormId;
+        this.carFormModel = carFormModel;
+        this.carFormYear = carFormYear;
+        this.carFormMileage = carFormMileage;
+        this.carFormOwnerName = carFormOwnerName;
+        this.carFormOwnerNumber = carFormOwnerNumber;
+        this.carFormOwnerAddress = carFormOwnerAddress;
+        this.carFormMasterName = carFormMasterName;
+        this.carFormMasterWork = carFormMasterWork;
     }
 
     public CarForm() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getCarFormId() {
+        return carFormId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCarFormId(Integer carFormId) {
+        this.carFormId = carFormId;
     }
 
-    public String getCarModel() {
-        return carModel;
+    public String getCarFormModel() {
+        return carFormModel;
     }
 
-    public void setCarModel(String carModel) {
-        this.carModel = carModel;
+    public void setCarFormModel(String carFormModel) {
+        this.carFormModel = carFormModel;
     }
 
-    public String getCarYear() {
-        return carYear;
+    public String getCarFormYear() {
+        return carFormYear;
     }
 
-    public void setCarYear(String carYear) {
-        this.carYear = carYear;
+    public void setCarFormYear(String carFormYear) {
+        this.carFormYear = carFormYear;
     }
 
-    public int getCarMileage() {
-        return carMileage;
+    public Integer getCarFormMileage() {
+        return carFormMileage;
     }
 
-    public void setCarMileage(int carMileage) {
-        this.carMileage = carMileage;
+    public void setCarFormMileage(Integer carFormMileage) {
+        this.carFormMileage = carFormMileage;
     }
 
-    public String getCarOwnerName() {
-        return carOwnerName;
+    public String getCarFormOwnerName() {
+        return carFormOwnerName;
     }
 
-    public void setCarOwnerName(String carOwnerName) {
-        this.carOwnerName = carOwnerName;
+    public void setCarFormOwnerName(String carFormOwnerName) {
+        this.carFormOwnerName = carFormOwnerName;
     }
 
-    public String getCarOwnerNumber() {
-        return carOwnerNumber;
+    public String getCarFormOwnerNumber() {
+        return carFormOwnerNumber;
     }
 
-    public void setCarOwnerNumber(String carOwnerNumber) {
-        this.carOwnerNumber = carOwnerNumber;
+    public void setCarFormOwnerNumber(String carFormOwnerNumber) {
+        this.carFormOwnerNumber = carFormOwnerNumber;
     }
 
-    public String getCarOwnerAddress() {
-        return carOwnerAddress;
+    public String getCarFormOwnerAddress() {
+        return carFormOwnerAddress;
     }
 
-    public void setCarOwnerAddress(String carOwnerAddress) {
-        this.carOwnerAddress = carOwnerAddress;
+    public void setCarFormOwnerAddress(String carFormOwnerAddress) {
+        this.carFormOwnerAddress = carFormOwnerAddress;
     }
 
-    public String getCarMasterName() {
-        return carMasterName;
+    public String getCarFormMasterName() {
+        return carFormMasterName;
     }
 
-    public void setCarMasterName(String carMasterName) {
-        this.carMasterName = carMasterName;
+    public void setCarFormMasterName(String carFormMasterName) {
+        this.carFormMasterName = carFormMasterName;
     }
 
-    public String getCarMasterWork() {
-        return carMasterWork;
+    public String getCarFormMasterWork() {
+        return carFormMasterWork;
     }
 
-    public void setCarMasterWork(String carMasterWork) {
-        this.carMasterWork = carMasterWork;
+    public void setCarFormMasterWork(String carFormMasterWork) {
+        this.carFormMasterWork = carFormMasterWork;
     }
 }
